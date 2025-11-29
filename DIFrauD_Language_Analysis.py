@@ -68,7 +68,7 @@ from langdetect import detect, detect_langs, LangDetectException
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.metrics import (
     classification_report, confusion_matrix, f1_score,
     precision_score, recall_score, accuracy_score,
@@ -603,40 +603,41 @@ metrics_rf_eng, pred_rf_eng, _ = train_and_evaluate_classifier(
 rf_results.append(metrics_rf_eng)
 
 
-# Train SVM (Support Vector Machine)
-# Source: https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+# Train SVM (Support Vector Machine) using LinearSVC
+# Source: https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html
+# Note: LinearSVC is faster than SVC with kernel='linear' for large sparse datasets like TF-IDF
 
 print("="*60)
-print("SVM CLASSIFIER")
+print("SVM CLASSIFIER (LinearSVC)")
 print("="*60)
 
 svm_results = []
 
-# SVM on Full Dataset
-svm_full = SVC(
-    kernel='linear',
+# LinearSVC on Full Dataset
+svm_full = LinearSVC(
     C=1.0,
     class_weight='balanced',
+    max_iter=10000,
     random_state=SEED
 )
 metrics_svm_full, pred_svm_full, _ = train_and_evaluate_classifier(
     svm_full, X_train_full_tfidf, X_test_full_tfidf,
     y_train_full, y_test_full,
-    'SVM', 'Full (Multilingual)'
+    'SVM (LinearSVC)', 'Full (Multilingual)'
 )
 svm_results.append(metrics_svm_full)
 
-# SVM on English-only Dataset
-svm_eng = SVC(
-    kernel='linear',
+# LinearSVC on English-only Dataset
+svm_eng = LinearSVC(
     C=1.0,
     class_weight='balanced',
+    max_iter=10000,
     random_state=SEED
 )
 metrics_svm_eng, pred_svm_eng, _ = train_and_evaluate_classifier(
     svm_eng, X_train_eng_tfidf, X_test_eng_tfidf,
     y_train_eng, y_test_eng,
-    'SVM', 'English-only'
+    'SVM (LinearSVC)', 'English-only'
 )
 svm_results.append(metrics_svm_eng)
 
@@ -847,7 +848,7 @@ print("\n" + "="*60)
 print("PERFORMANCE DIFFERENCE (English-only vs Full)")
 print("="*60)
 
-for classifier in ['Random Forest', 'SVM', 'DistilBERT']:
+for classifier in ['Random Forest', 'SVM (LinearSVC)', 'DistilBERT']:
     clf_results = results_df[results_df['Classifier'] == classifier]
 
     if len(clf_results) < 2:
