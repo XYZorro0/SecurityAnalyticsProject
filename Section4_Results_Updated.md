@@ -22,17 +22,17 @@ Analysis by class (deceptive versus non-deceptive) revealed an asymmetric distri
 
 ## 4.3 Classification Performance Comparison
 
-Table 2 presents classification results comparing model performance on the English-only dataset versus the full multilingual dataset. Notably, all models exhibited performance improvements when trained on multilingual data.
+Table 2 presents classification results comparing model performance on the original English-dominated dataset versus the synthetic multilingual dataset. Notably, all models exhibited performance improvements when trained on multilingual data.
 
 **Table 2: Classification Performance Comparison**
 
 | Model | Dataset | Accuracy | Bal. Acc. | F1 (W) | F1 (M) | Change |
 |-------|---------|----------|-----------|--------|--------|--------|
-| Random Forest | English-only | 0.801 | 0.788 | 0.800 | 0.790 | — |
-| | Full (Multilingual) | 0.806 | 0.794 | 0.806 | 0.796 | +0.7% |
-| SVM (LinearSVC) | English-only | 0.795 | 0.797 | 0.797 | 0.789 | — |
-| | Full (Multilingual) | 0.799 | 0.801 | 0.801 | 0.794 | +0.6% |
-| DistilBERT | English-only | 0.796 | 0.769 | 0.793 | 0.776 | — |
-| | Full (Multilingual) | 0.815 | 0.811 | 0.816 | 0.806 | +2.4% |
+| Random Forest | Original | 0.801 | 0.788 | 0.800 | 0.790 | — |
+| | Synthetic | 0.806 | 0.794 | 0.806 | 0.796 | +0.7% |
+| LinearSVC | Original | 0.795 | 0.797 | 0.797 | 0.789 | — |
+| | Synthetic | 0.799 | 0.801 | 0.801 | 0.794 | +0.6% |
+| DistilBERT | Original | 0.796 | 0.769 | 0.793 | 0.776 | — |
+| | Synthetic | 0.815 | 0.811 | 0.816 | 0.806 | +2.4% |
 
 DistilBERT achieved the highest absolute performance on both datasets and exhibited the largest relative improvement (+2.4% accuracy increase versus +0.6–0.7% for traditional classifiers). The macro F1-score, which equally weights performance across classes, showed DistilBERT improving from 0.776 to 0.806 (3.9% increase), compared to Random Forest's 0.8% increase and LinearSVC's 0.6% increase. These results demonstrate that DistilBERT benefits more substantially from multilingual training data than traditional classifiers.
